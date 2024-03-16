@@ -10,7 +10,7 @@ const ApiController = () => {
     const [open, setOpen] = useState(false)
     useEffect(() => {
         if (!baseURL) {
-            localStorage.setItem('apiUrl', "localhost:9090")
+            localStorage.setItem('apiUrl', "localhost:8080")
         }
     }, [])
 
