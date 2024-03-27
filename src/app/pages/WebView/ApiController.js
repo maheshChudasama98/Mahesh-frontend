@@ -10,7 +10,7 @@ const ApiController = () => {
     const [open, setOpen] = useState(false)
     useEffect(() => {
         if (!baseURL) {
-            localStorage.setItem('apiUrl', "localhost:8080")
+            localStorage.setItem('apiUrl', "localhost:8000")
         }
     }, [])
 
@@ -50,12 +50,13 @@ const ApiController = () => {
                             })}
                             onSubmit={onSubmitAction}>
                             {(props) => {
-                                return (
+                                return (<>
+                                    <h4 style={{ margin: "0 0 20px 0", padding: 0 }}>{`http://${props?.values?.apiURL}/`}</h4>
                                     <Form noValidate >
                                         <TextFieldForm
                                             formik={props}
                                             field={'apiURL'}
-                                            label={'DApi URL'}
+                                            label={'Api URL'}
                                             placeholder='Bachelor of Science , Master of Business' />
                                         <Button
                                             onClick={props.handleSubmit}
@@ -65,6 +66,7 @@ const ApiController = () => {
                                             save
                                         </Button>
                                     </Form>
+                                </>
                                 )
                             }}
                         </Formik>

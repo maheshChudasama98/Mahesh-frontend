@@ -15,7 +15,7 @@ import ModalDialog from 'app/components/Modals/ModalDialog';
 import { sweetAlertDelete } from 'app/config/sweetAlertsActions';
 import FormButton from 'app/components/Inputs/Forms/FormButton';
 
-const ModifyModel = ({ open, list, handleClose, defaultData, fetchApiAction }) => {
+const ModifyModel = ({ open, list, handleClose, defaultData, fetchApiAction, categoryFilter }) => {
     const dispatch = useDispatch()
     const [startTime, setStartTime] = useState(dayjs(defaultData?.startTime) || dayjs(new Date()));
     const [endTime, setEndTime] = useState(dayjs(defaultData?.endTime) || dayjs(new Date()));

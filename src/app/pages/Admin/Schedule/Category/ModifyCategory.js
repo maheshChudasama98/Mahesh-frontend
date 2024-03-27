@@ -46,8 +46,7 @@ const ModifyCategory = () => {
             title={"Add Category"}
             button={
                 <PageHeaderButton title={"Back"} to={"/admin/category"} />
-            }
-        >
+            }>
             <Formik
                 initialValues={{
                     categoryName: state?.categoryName || "",
@@ -64,7 +63,7 @@ const ModifyCategory = () => {
                     return (
                         <>
                             <Grid container spacing={1.5} >
-                                <Grid item xs={12}   >
+                                <Grid item xs={12}>
                                     <TextFieldForm
                                         formik={props}
                                         field={"categoryName"}
@@ -72,10 +71,10 @@ const ModifyCategory = () => {
                                         palaceHolder="Wake-up"
                                     />
                                 </Grid>
-                                <Grid item xs={6} >
+                                <Grid item xs={12} sm={6} >
                                     <ColorPicker defaultColor={selectedColor} handleColor={handleColorChange} />
                                 </Grid>
-                                <Grid item xs={6} >
+                                <Grid item xs={12} sm={6} >
                                     <SelectedIcon color={selectedColor} handleIcon={handleIcon} defaultIcon={defaultIcon} />
                                 </Grid>
 

@@ -3,7 +3,7 @@ import styled from "@mui/material/styles/styled";
 import { lightenColor } from 'app/config/colorChange';
 import { LinearProgress } from '@mui/material';
 
-const Linear = ({ value, color }) => {
+const Linear = ({ value, color, sx }) => {
     const StyledLinearProgress = styled(LinearProgress)(({ colorValue, backgroundColor }) => ({
         '& .MuiLinearProgress-bar': {
             backgroundColor: colorValue,
@@ -14,6 +14,7 @@ const Linear = ({ value, color }) => {
         height: 6,
         borderRadius: 5,
         flex: 1,
+        ...sx
     }));
     return (
         <StyledLinearProgress

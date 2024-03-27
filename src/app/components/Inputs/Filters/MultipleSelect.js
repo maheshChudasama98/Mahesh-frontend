@@ -3,6 +3,9 @@ import { Autocomplete, Checkbox, Chip, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import IconArray from 'app/components/Inputs/Icons/IconArray';
+
 
 const MultiSelectMenu = ({ label, menuList, valueKey, labelKey, callBack, ...props }) => {
     const { t } = useTranslation();
@@ -16,7 +19,7 @@ const MultiSelectMenu = ({ label, menuList, valueKey, labelKey, callBack, ...pro
         <Autocomplete
             id={label}
             fullWidth
-            limitTags={2}
+            limitTags={1}
             multiple
             size='small'
             disableCloseOnSelect
@@ -35,20 +38,37 @@ const MultiSelectMenu = ({ label, menuList, valueKey, labelKey, callBack, ...pro
                     }}
                 />
             )}
-            // renderOption={(props, option, { selected }) => (
-            //     <li {...props}>
-            //         <Checkbox
-            //             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-            //             checkedIcon={<CheckBoxIcon fontSize="small" />}
-            //             style={{ marginRight: 8 }}
-            //             checked={selected}
-            //         />
-            //         {option[labelKey]}
-            //     </li>
-            // )}
+            renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                    <Checkbox
+                        icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+                        checkedIcon={<CheckBoxIcon fontSize="small" />}
+                        style={{ margin: 0, paddingLeft: 0 }}
+                        checked={selected}
+                    />
+                    {option[labelKey]}
+                </li>
+            )}
             renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
-                    <Chip size='small' key={index} label={option[labelKey]} {...getTagProps({ index })} />
+                    <Chip
+                        icon={
+                            <FontAwesomeIcon
+                                icon={(IconArray.filter((icon) => icon.value == option?.categoryIcon))[0]?.icon || IconArray[0]?.icon}
+                                color={"#fff"}
+                                size='xs'
+                                style={{ fontSize: 13, margin: 8 }}
+                            />
+                        }
+                        size='small'
+                        key={index}
+                        label={option[labelKey]}
+                        style={{
+                            background: option?.categoryColor,
+                            color: "#fff",
+
+                        }}
+                        {...getTagProps({ index })} />
                 ))
             }
             noOptionsText={t('datanotfound')}

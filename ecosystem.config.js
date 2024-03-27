@@ -1,6 +1,6 @@
 module.exports = {
     apps: [{
-        name: 'my-web',
+        name: 'Web',
         script: 'serve',
         env: {
             PM2_SERVE_PATH: './build',

@@ -88,9 +88,9 @@ const CustomAnimatedPieChart = ({ chartData }) => {
                 }
             };
         })(Highcharts);
-        setTimeout(() => {
+        // setTimeout(() => {
             setFlag(true)
-        }, 500);
+        // }, 500);
     }, [chartData]); // Empty dependency array to run the effect only once
 
 

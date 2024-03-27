@@ -20,8 +20,8 @@ li {
 }
 
 ::-webkit-scrollbar-thumb {
-  /* background: #55555555; */
-  background: #feb800d4;
+  background: #55555555;
+  /* background: #feb800d4; */
   border-radius: 15px;
 }
 

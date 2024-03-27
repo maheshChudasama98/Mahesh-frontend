@@ -1,5 +1,6 @@
 import MainCard from 'app/components/Cards/MainCard';
 import PieChart from 'app/components/Graphs/PieChart';
+import Loader from 'app/components/loaders/BasicLoader';
 import React, { useEffect, useState } from 'react'
 
 const DailyTracker = ({ list }) => {
@@ -27,18 +28,21 @@ const DailyTracker = ({ list }) => {
 
     useEffect(() => {
         const totalTimeMap = {};
+        let totalHour = 0;
         list.forEach(item => {
             const categoryName = item.Category.categoryName;
             const categoryColor = item.Category.categoryColor;
             const totalTime = item.totalTime;
 
             if (totalTimeMap[categoryName]) {
+                totalHour = totalHour + totalTimeMap[categoryName]?.totalTime
                 totalTimeMap[categoryName].totalTime += convertTimeToMinutes(totalTime);
             } else {
                 totalTimeMap[categoryName] = {
                     totalTime: convertTimeToMinutes(totalTime),
                     categoryColor: categoryColor
                 };
+                totalHour = totalHour + totalTimeMap[categoryName]?.totalTime
             }
         });
 
@@ -51,21 +55,27 @@ const DailyTracker = ({ list }) => {
 
         for (const [categoryName, { totalTime, categoryColor }] of Object.entries(totalTimeMap)) {
             const formattedTotalTime = convertMinutesToTime(totalTime);
-            const percentage = calculatePercentageOfDay(formattedTotalTime);
+            const percentage = Number(((totalTime / totalHour) * 100).toFixed(1));
+            // const percentage = Number((totalTime / totalHour) * 100).toFixed(2);
+            // const percentage = calculatePercentageOfDay(formattedTotalTime);
 
             result.categoryName.push(categoryName)
             result.percentage.push(percentage)
             result.categoryColor.push(categoryColor)
             result.totalTime.push(formattedTotalTime)
         }
-        setValue(result)
+        console.log(result);
+        setValue([])
+        setTimeout(() => {
+            setValue(result)
+        }, 500);
     }, [list])
 
     return (
         <>
             {
-                value && value?.categoryColor?.length > 0 &&
-                <PieChart chartData={value} />
+                value && value?.categoryColor?.length > 0 ?
+                    <PieChart chartData={value} /> : <Loader />
             }
         </>
     )

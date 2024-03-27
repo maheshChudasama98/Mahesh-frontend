@@ -16,8 +16,8 @@ const Dashboard = () => {
   const [timeLineList, setTimeLineList] = useState([]);
   const [flag, setFlag] = useState(true);
   const [value, setValue] = useState(-1);
-  const [graphStart, setGraphStart] = useState(new Date().toLocaleDateString('en-GB'));
-  const [graphEnd, setGraphEnd] = useState(new Date().toLocaleDateString('en-GB'));
+  const [graphStart, setGraphStart] = useState();
+  const [graphEnd, setGraphEnd] = useState();
   const [timeLineStart, setTimeLineStart] = useState(new Date().toLocaleDateString('en-GB'));
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const Dashboard = () => {
         start: new Date().toLocaleDateString('en-GB'),
         end: new Date().toLocaleDateString('en-GB')
       }, (res) => {
-        setGraphList(res)
+        setGraphList(res.reverse())
         setTimeLineList(res)
       }))
 
@@ -46,7 +46,7 @@ const Dashboard = () => {
           start: timeLineStart || new Date().toLocaleDateString('en-GB'),
           end: timeLineStart || new Date().toLocaleDateString('en-GB')
         }, (res) => {
-          setTimeLineList(res)
+          setTimeLineList(res.reverse())
         }))
 
       }
@@ -66,10 +66,19 @@ const Dashboard = () => {
             button={
               <Box sx={{ display: { xs: "block", sm: "flex" } }}>
                 <Box sx={{ width: { xs: '100%', sm: 200 }, margin: { xs: "0 0 10px  0", sm: "0 5px 0 0" } }}>
-                  <DateRangePicker label={'start'} onChange={(event) => { setGraphStart(new Date(event).toLocaleDateString('en-GB')); setValue(0) }} />
+                  <DateRangePicker
+                    label={'start'}
+                    // minDate={graphEnd}
+                    maxDate={graphEnd}
+                    disableFuture
+                    onChange={(event) => { setGraphStart(new Date(event).toLocaleDateString('en-GB')); setValue(0) }} />
                 </Box>
                 <Box sx={{ width: { xs: '100%', sm: 200 } }}>
-                  <DateRangePicker label={'end'} onChange={(event) => { setGraphEnd(new Date(event).toLocaleDateString('en-GB')); setValue(0) }} />
+                  <DateRangePicker label={'end'}
+                    disableFuture
+                    minDate={graphStart}
+                    // maxDate={graphStart}
+                    onChange={(event) => { setGraphEnd(new Date(event).toLocaleDateString('en-GB')); setValue(0) }} />
                 </Box>
               </Box>
             } >

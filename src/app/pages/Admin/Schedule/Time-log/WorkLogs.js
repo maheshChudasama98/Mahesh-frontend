@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { faCalendarDays, faLayerGroup, faListUl, faTimeline, } from '@fortawesome/free-solid-svg-icons'
+import { faCalendarDays, faChartSimple, faLayerGroup, faListUl, faTimeline, } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button, Grid, IconButton, Tab, Tabs, Tooltip, Typography } from '@mui/material'
+import { Box, Button, Grid, IconButton, Tab, Tabs, Tooltip, Typography } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { timelogDeleteApi, timeLogListApi, categoryFetchListApi } from 'app/services/Admin/timelog-services'
 import { sweetAlertDelete } from 'app/config/sweetAlertsActions'
@@ -15,7 +15,6 @@ import LinearProgress from 'app/components/Other/LinearProgress'
 import NoDataPlaceholder from 'app/shared/NoDataPlaceholder'
 import MultipleSelect from 'app/components/Inputs/Filters/MultipleSelect'
 import DateRangePicker from 'app/components/Inputs/Filters/DateRangePicker'
-import TimeLine from './TimeLine'
 import MyCalendar from './Calendar'
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
@@ -32,6 +31,24 @@ const TimeLogs = () => {
     const [endFilter, setEndFilter] = useState(new Date().toLocaleDateString('en-GB'));
     const [categoryFilter, setCategoryFilter] = useState([]);
 
+    const [total, setTotal] = useState(0);
+    const [totalList, setTotalList] = useState([]);
+
+    function convertMinutesToTime(totalMinutes) {
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = Math.floor(totalMinutes % 60);
+        const seconds = Math.round((totalMinutes - Math.floor(totalMinutes)) * 60);
+        return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function calculatePercentageOfDay(time) {
+        const [hours, minutes] = time.split(':').map(Number);
+        const totalMinutes = hours * 60 + minutes;
+        const totalMinutesInDay = 24 * 60;
+        const percentageOfDay = (totalMinutes / totalMinutesInDay) * 100;
+        return Number(percentageOfDay.toFixed(1))
+    }
+
     const fetchApiAction = () => {
         if (value == 1) {
             const temp = flagCalender + 1
@@ -43,6 +60,39 @@ const TimeLogs = () => {
             category: categoryFilter
         }, (res) => {
             setTimeLogList(res)
+            const totalTimeMap = {};
+            let totalHour = 0;
+            res.forEach(item => {
+                const categoryName = item.Category.categoryName;
+                const categoryColor = item.Category.categoryColor;
+                const categoryIcon = item.Category.categoryIcon;
+                const minutes = item.minutes;
+                if (totalTimeMap[categoryName]) {
+                    totalHour = totalHour + minutes
+                    totalTimeMap[categoryName].totalMinutes = totalTimeMap[categoryName].totalMinutes + minutes;
+                } else {
+                    totalTimeMap[categoryName] = {
+                        totalMinutes: minutes,
+                        categoryColor: categoryColor,
+                        categoryIcon: categoryIcon
+                    }
+                    totalHour = totalHour + minutes
+                }
+            });
+            setTotal(totalHour)
+            const tempObject = []
+            for (const [categoryName, { totalMinutes, categoryColor, categoryIcon }] of Object.entries(totalTimeMap)) {
+                const formattedTotalTime = convertMinutesToTime(totalMinutes);
+                const percentage = ((totalMinutes / totalHour) * 100).toFixed(2);
+                tempObject.push({
+                    categoryName: categoryName,
+                    categoryColor: categoryColor,
+                    categoryIcon: categoryIcon,
+                    percentage: parseFloat(percentage),
+                    totalTime: formattedTotalTime
+                })
+            }
+            setTotalList(tempObject)
         }))
     }
 
@@ -140,12 +190,10 @@ const TimeLogs = () => {
                 tabs={
                     <Tabs value={value} onChange={handleChange} sx={{ margin: "0px 20px" }} >
                         <Tab icon={<FontAwesomeIcon icon={faListUl} size='lg' />} />
-                        {/* <Tab icon={<FontAwesomeIcon icon={faTimeline} size='lg' rotation={90} />} /> */}
                         <Tab icon={<FontAwesomeIcon icon={faCalendarDays} size='lg' />} />
                     </Tabs>
                 }
                 headerStyle={{ padding: "10px 20px", margin: 0 }}>
-
                 {
                     value == 0 && timeLogList && timeLogList.length > 0 ? timeLogList.map((item, key) => {
                         const temp = calculatePercentageOfDay(item?.totalTime)
@@ -218,10 +266,29 @@ const TimeLogs = () => {
                                 setDefaultData(value);
                                 setOpen(true);
                             }}
+                            categoryFilter={categoryFilter}
                             flag={flagCalender} /> : < NoDataPlaceholder />
                 }
 
-            </MainCard >
+
+                {/* <Box>
+                    {totalList && totalList.length > 0 && totalList.map((item, key) => {
+                        return (
+                            <Box key={key} sx={{ margin: "auto" }} >
+                                <h3 style={{ margin: 0, padding: 0 }}>{item?.categoryName}</h3>
+                                <div style={{ display: 'flex', alignItems: 'center', alignSelf: "center", margin: 0, padding: 0, }}>
+                                    <LinearProgress
+                                        value={item?.percentage}
+                                        color={item?.categoryColor} />
+                                    <h4 style={{ margin: "0px 0px 0px 10px", padding: 0 }}> {item?.percentage}% </h4>
+                                    <h4 style={{ margin: "0px 0px 0px 10px", padding: 0 }}> {total} </h4>
+                                </div>
+                            </Box>
+                        )
+                    })}
+                </Box> */}
+
+            </MainCard>
             {
                 open &&
                 <ModifyTimeLogModel

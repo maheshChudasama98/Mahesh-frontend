@@ -15,6 +15,7 @@ import projectsRoutes from "app/routes/admin/projects.routes";
 import settingRoutes from "app/routes/admin/setting.routes";
 import skillsRoutes from "app/routes/admin/skills.routes";
 import timelogRoutes from "app/routes/admin/timelog.routes";
+import settingWalletRoutes from "app/routes/wallet/setting.routes";
 const routesForPublic = [
     {
         path: "/dashboard",
@@ -53,6 +54,17 @@ const routesForAuthenticatedOnly = [
                 ...skillsRoutes,
                 ...timelogRoutes
 
+            ]
+        },
+        {
+            middleware: [
+                {
+                    element: Admin,
+                    fallbackPath: "/dashboard"
+                },
+            ],
+            routes: [
+                ...settingWalletRoutes,
             ]
         }
         ]

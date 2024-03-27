@@ -10,6 +10,15 @@ offlineExporting(Highcharts);
 HighchartsExportData(Highcharts);
 const LineCharts = ({ chartObject }) => {
     const chartOptions = {
+        chart: {
+            // type: 'area',
+            type: 'spline',
+            scrollablePlotArea: {
+                // minWidth: 600,
+                // scrollPositionX: 1
+            },
+            zoomType: 'yx'
+        },
         xAxis: {
             categories: chartObject?.categories
         },

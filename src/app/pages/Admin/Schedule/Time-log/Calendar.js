@@ -8,7 +8,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 moment.updateLocale('en', { week: { dow: 1 } });
 const localizer = momentLocalizer(moment);
 
-const MyCalendar = ({ callBackFun, flag }) => {
+const MyCalendar = ({ callBackFun, flag, categoryFilter }) => {
     const dispatch = useDispatch();
     const currentDate = new Date();
     const [start, setStart] = useState(new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).toLocaleDateString('en-GB'));
@@ -77,17 +77,18 @@ const MyCalendar = ({ callBackFun, flag }) => {
     };
 
     useEffect(() => {
-        dispatch(timeLogListApi({ start: start, end: end }, (res) => {
-            const temp = res.map(item => ({
-                title: item.Category.categoryName,
-                start: new Date(item.startTime),
-                end: new Date(item.endTime),
-                color: item.Category.categoryColor,
-                type: item.Category.categoryIcon,
-                item: item
-            }));
-            setEvents(temp)
-        }))
+        dispatch(timeLogListApi({ start: start, end: end, category: categoryFilter },
+            (res) => {
+                const temp = res.map(item => ({
+                    title: item.Category.categoryName,
+                    start: new Date(item.startTime),
+                    end: new Date(item.endTime),
+                    color: item.Category.categoryColor,
+                    type: item.Category.categoryIcon,
+                    item: item
+                }));
+                setEvents(temp)
+            }))
 
     }, [start, flag])
     return (

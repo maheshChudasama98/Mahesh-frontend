@@ -5,6 +5,7 @@ import Category from "app/pages/Admin/Schedule/Category/Category";
 import ModifyCategory from "app/pages/Admin/Schedule/Category/ModifyCategory";
 
 import WorkLogs from "app/pages/Admin/Schedule/Time-log/WorkLogs";
+import Diagram from "app/pages/Admin/Schedule/Diagram/Diagram";
 
 const routes = [
     {
@@ -22,6 +23,10 @@ const routes = [
     {
         path: "/admin/timelog/",
         element: <Page component={WorkLogs} />
+    },
+    {
+        path: "/admin/time/diagram",
+        element: <Page component={Diagram} />
     },
 ]
 

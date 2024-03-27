@@ -1,10 +1,7 @@
 import React from "react";
 import AutoAwesomeMosaicRoundedIcon from '@mui/icons-material/AutoAwesomeMosaicRounded';
-// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-// import HistoryToggleOffIcon from '@mui/icons-material/HistoryToggleOff';
-// import AccountTreeRoundedIcon from '@mui/icons-material/AccountTreeRounded';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAward, faBarsProgress, faBuilding, faGear, faHourglassHalf, faUser, faUserGraduate } from "@fortawesome/free-solid-svg-icons";
+import { faAward, faBarsProgress, faBuilding, faGear, faHourglassHalf, faSackDollar, faUser, faUserGraduate } from "@fortawesome/free-solid-svg-icons";
 
 let menus = [
     {
@@ -22,32 +19,56 @@ let menus = [
         children: [
             {
                 uri: "/admin/timelog",
-                label: 'Time log',
+                label: 'Work logs',
                 type: "nav-item",
-                // icon: <HistoryToggleOffIcon sx={{ fontSize: 20 }} />
+            },
+            {
+                uri: "/admin/time/diagram",
+                label: 'Diagram',
+                type: "nav-item",
             },
             {
                 uri: "/admin/category",
                 label: 'Category',
                 type: "nav-item",
-                // icon: <HistoryToggleOffIcon sx={{ fontSize: 20 }} />
             },
         ]
     },
-
+    {
+        role: ["SuperAdmin", "Admin", "User"],
+        label: 'Wallet',
+        type: "collapsible",
+        uri: "/admin/wallet",
+        icon: <FontAwesomeIcon icon={faSackDollar} style={{ fontSize: 17 }} />,
+        children: [
+            {
+                uri: "/admin/wallet",
+                label: 'Dashboard',
+                type: "nav-item",
+            },
+            {
+                uri: "/admin/wallet/party",
+                label: 'Counterparty',
+                type: "nav-item",
+            },
+            {
+                uri: "/admin/wallet/setting",
+                label: 'Setting',
+                type: "nav-item",
+            },
+        ]
+    },
     {
         role: ["SuperAdmin", "Admin", "User"],
         label: 'Education',
         type: "collapsible",
         uri: "/admin/education",
-        // icon: <AccountTreeRoundedIcon sx={{ fontSize: 20 }} />
         icon: <FontAwesomeIcon icon={faUserGraduate} style={{ fontSize: 17 }} />,
         children: [{
             role: ["SuperAdmin", "Admin", "User"],
             label: 'Education',
             type: "nav-item",
             uri: "/admin/education",
-            // icon: <AccountTreeRoundedIcon sx={{ fontSize: 20 }} />
             icon: <FontAwesomeIcon icon={faUserGraduate} style={{ fontSize: 17 }} />
         },
         {
@@ -79,42 +100,8 @@ let menus = [
         label: 'Profile',
         type: "nav-item",
         uri: "/admin/profile",
-        // icon: <AccountCircleIcon sx={{ fontSize: 20 }} />
         icon: <FontAwesomeIcon icon={faUser} style={{ fontSize: 17 }} />
     },
-
-    // {
-    //     role: ["SuperAdmin", "Admin", "User"],
-    //     label: 'Skills',
-    //     type: "collapsible",
-    //     icon: <StreamOutlinedIcon sx={{ fontSize: 20 }} />,
-    //     children: [
-    //         {
-    //             uri: "/admin/skills/technical",
-    //             label: 'Technical Skills',
-    //             type: "nav-item",
-    //             // icon: <HistoryToggleOffIcon sx={{ fontSize: 20 }} />
-    //         },
-    //         {
-    //             uri: "/admin/skills/soft",
-    //             label: 'Soft Skills',
-    //             type: "nav-item",
-    //             // icon: <HistoryToggleOffIcon sx={{ fontSize: 20 }} />
-    //         },
-    //         {
-    //             uri: "/admin/skills/languages",
-    //             label: 'Languages',
-    //             type: "nav-item",
-    //             // icon: <HistoryToggleOffIcon sx={{ fontSize: 20 }} />
-    //         },
-    //         {
-    //             uri: "/admin/skills/certificate",
-    //             label: 'Certificate',
-    //             type: "nav-item",
-    //             // icon: <HistoryToggleOffIcon sx={{ fontSize: 20 }} />
-    //         },
-    //     ]
-    // },
     {
         role: ["SuperAdmin", "Admin", "User"],
         label: 'Company',

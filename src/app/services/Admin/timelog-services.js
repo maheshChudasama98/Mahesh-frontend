@@ -90,6 +90,22 @@ export const timeLogListApi = (data, cb) => {
         })
     }
 }
+export const DiagramListApi = (data, cb) => {
+    return (dispatch) => {
+        dispatch({ type: FETCH_START });
+        jwtAuthAxios.defaults.headers.common['authorization'] = localStorage.getItem('token');
+        jwtAuthAxios.post(`timelog/diagram`, data).then((res) => {
+            if (res.data.status) {
+                dispatch({ type: FETCH_SUCCESS });
+                if (cb) cb(res.data.data)
+            } else {
+                dispatch({ type: FETCH_ERROR, payload: res.data.message });
+            }
+        }).catch((error) => {
+            errorHandler(error, dispatch)
+        })
+    }
+}
 
 export const timelogDeleteApi = (id, cb) => {
     return (dispatch) => {
